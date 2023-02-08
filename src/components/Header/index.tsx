@@ -1,4 +1,4 @@
-import styles from "./Header.module.sass";
+import styles from "./Header.module.css";
 import Logo from "public/favicon.ico";
 import Image from "next/image";
 import Link from "next/link";
