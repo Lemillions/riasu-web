@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from 'swiper';
+import { Autoplay, Navigation, Pagination } from 'swiper';
 import styles from "./Banner.module.css";
 import "swiper/css";
 import 'swiper/css/navigation';
@@ -9,12 +9,11 @@ import 'swiper/css/pagination';
 export default function Banner() {
   return (
     <Swiper
-      modules={[Navigation, Pagination]}
+      modules={[Navigation, Pagination, Autoplay]}
       loop={true}
       navigation
+      autoplay={true}
       pagination={{ clickable: true }}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
       id={styles.banner}
     >
       <SwiperSlide>

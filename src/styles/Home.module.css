@@ -1,8 +1,10 @@
 .main {
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  padding: 1rem 1rem;
   min-height: 100vh;
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 @keyframes rotate {

@@ -23,45 +23,62 @@ interface propsCarrossel {
 export default function CarrosselFilmes(props: propsCarrossel) {
   const { filmesOuCanal } = props;
   const [width, setWidth] = useState(0);
-  const swiperRef = useRef<SwiperType  | null>();
+  const swiperRef = useRef<SwiperType | null>();
+  const [isEnd, setIsEnd] = useState(false);
+  const [isBeginning, setIsBeginning] = useState(true);
   const resize = () => {
     if (swiperRef) {
       setWidth(swiperRef.current?.width || 230);
     }
   };
-console.log(filmesOuCanal)
   useEffect(() => {
     setWidth(swiperRef.current?.width || 230);
-    window.addEventListener('resize', resize)
+    window.addEventListener("resize", resize);
   }, []);
+  console.log(swiperRef.current?.activeIndex);
   return (
     <div className={styles.slideContainer}>
       <Swiper
         modules={[Navigation]}
         navigation
-        slidesPerGroup={Math.floor(width / 233)}
-        slidesPerView={Math.floor(width / 233) + 0.3}
-        spaceBetween={30}
+        slidesPerGroup={width > 500?Math.floor(width / 233):Math.floor(width / (233*0.5))}
+        slidesPerView={(width > 500?Math.floor(width / 233):Math.floor(width / (233*0.5))) + 0.3}
+        spaceBetween={15}
         autoplay={true}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
+        onSlideChange={(Swiper) => {
+          setIsEnd(Swiper.isEnd);
+          setIsBeginning(Swiper.isBeginning);
+        }}
+        
       >
         {filmesOuCanal.map((filmeOuCanal) => (
-          <SwiperSlide key={filmeOuCanal.id}>
-            <Link href={`../filmes/${filmeOuCanal.id}`} style={{cursor:'pointer', color:'white', marginRight: '5px'}}>
-            <Image
-              src={filmeOuCanal.banner}
-              width={203}
-              height={135}
-              alt={filmeOuCanal.name}
-            />
-            <h3>{filmeOuCanal.name}</h3>
+          <SwiperSlide key={filmeOuCanal.id} className={styles.cardFlmeOuCanal}>
+            <Link
+              href={`../filmes/${filmeOuCanal.id}`}
+              style={{ cursor: "pointer", color: "#ffe1dd", marginRight: "5px" }}
+            >
+              <Image
+                src={filmeOuCanal.banner}
+                width={width > 500?203:203*0.5}
+                height={width > 500?135:135*0.5}
+                alt={filmeOuCanal.name}
+              />
+              <h3 className={styles.titulo}>{filmeOuCanal.name}</h3>
             </Link>
           </SwiperSlide>
         ))}
       </Swiper>
-      <div className={styles.shadowRight} onClick={() => swiperRef.current?.slideNext()} />
-      <div className={styles.shadowLeft} onClick={() => swiperRef.current?.slidePrev()} />
-
+      <div
+        className={styles.shadowRight}
+        style={isEnd ? { display: "none" } : {}}
+        onClick={() => swiperRef.current?.slideNext()}
+      />
+      <div
+        className={styles.shadowLeft}
+        style={isBeginning ? { display: "none" } : {}}
+        onClick={() => swiperRef.current?.slidePrev()}
+      />
     </div>
   );
 }

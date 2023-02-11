@@ -2,6 +2,11 @@
   position: relative;
 }
 
+.cardFlmeOuCanal :hover {
+  background-color: #000000;
+  opacity: 0.7;
+  transition: 0.3s;
+}
 .shadowRight {
   z-index: 1;
   cursor: pointer;
@@ -32,6 +37,20 @@
   );
 }
 
-.swiper-button-next {
-  z-index: 2;
+.titulo{
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 508px) {
+  .shadowLeft {
+    width: 30px;
+    height: 130px;
+  }
+  .shadowRight {
+    width: 30px;
+    height: 130px;
+  }
 }
