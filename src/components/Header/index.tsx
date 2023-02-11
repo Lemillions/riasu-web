@@ -2,8 +2,8 @@ import styles from "./Header.module.css";
 import Logo from "public/favicon.ico";
 import Image from "next/image";
 import Link from "next/link";
-import { ConfigProvider, Dropdown, theme } from "antd";
-import { use, useEffect } from "react";
+import { Dropdown } from "antd";
+import { useEffect } from "react";
 
 interface Genero {
   id: string;
@@ -23,36 +23,57 @@ export default function Header(props: HeaderProps) {
   const itemsTv = generos.map((genero) => {
     return {
       key: genero.id,
-      label: <Link href={`../tv/genero/${genero.id}`}>{genero.name}</Link>,
+      label: (
+        <Link href={`../tv/genero/${genero.id}`} className={styles.dropItem}>
+          {genero.name}
+        </Link>
+      ),
     };
   });
   const itemsFilmes = generos.map((genero) => {
     return {
       key: genero.id,
-      label: <Link href={`../filmes/genero/${genero.id}`}>{genero.name}</Link>,
+      label: (
+        <Link
+          href={`../filmes/genero/${genero.id}`}
+          className={styles.dropItem}
+        >
+          {genero.name}
+        </Link>
+      ),
     };
   });
   useEffect(() => {
-    itemsTv.unshift({ key: "0", label: <Link href={"../tv"}>Todos</Link> });
-    itemsFilmes.unshift({ key: "0", label: <Link href={"../filmes"}>Todos</Link> });
+    itemsTv.unshift({
+      key: "0",
+      label: (
+        <Link href={"../tv"} className={styles.dropItem}>
+          Todos
+        </Link>
+      ),
+    });
+    itemsFilmes.unshift({
+      key: "0",
+      label: (
+        <Link href={"../filmes"} className={styles.dropItem}>
+          Todos
+        </Link>
+      ),
+    });
   }, []);
 
   return (
     <div id={styles.header}>
       <nav id={styles.containerEsquerda}>
-        <Image src={Logo} width={60} height={60} alt="Logo" />
-        <ConfigProvider
-          theme={{
-            algorithm: theme.darkAlgorithm,
-          }}
-        >
-          <Dropdown menu={{ items: itemsTv }} className={styles.navItem}>
-            <Link href={"../tv"}>TV</Link>
-          </Dropdown>
-          <Dropdown menu={{ items: itemsFilmes }} className={styles.navItem}>
-            <Link href={"../filmes"}>Filmes</Link>
-          </Dropdown>
-        </ConfigProvider>
+        <Link href={"../"}>
+          <Image src={Logo} width={40} height={40} alt="Logo" />
+        </Link>
+        <Dropdown menu={{ items: itemsTv }} className={styles.navItem}>
+          <Link href={"../tv"}>TV</Link>
+        </Dropdown>
+        <Dropdown menu={{ items: itemsFilmes }} className={styles.navItem}>
+          <Link href={"../filmes"}>Filmes</Link>
+        </Dropdown>
       </nav>
       <div id={styles.containerDireita}></div>
     </div>

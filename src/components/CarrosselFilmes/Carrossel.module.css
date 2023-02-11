@@ -1,0 +1,37 @@
+.slideContainer {
+  position: relative;
+}
+
+.shadowRight {
+  z-index: 1;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 202px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 22, 255, 0) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+.shadowLeft {
+  z-index: 1;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 202px;
+  background: linear-gradient(
+    270deg,
+    rgba(255, 22, 255, 0) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+}
+
+.swiper-button-next {
+  z-index: 2;
+}

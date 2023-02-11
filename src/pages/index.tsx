@@ -1,8 +1,11 @@
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
-import { api } from "@/utils/api";
+import { api } from "@/services/api";
 import { GetStaticProps } from "next";
 import Header from "@/components/Header";
+import Banner from "@/components/Banner";
+import CarroselFilmes from "@/components/CarrosselFilmes";
+import CarrosselFilmes from "@/components/CarrosselFilmes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,13 +50,18 @@ interface FilmeOuCanal {
 
 interface HomeProps {
   generos: Genero[];
+  filmes: FilmeOuCanal[];
 }
 
 export default function Home(props: HomeProps) {
   return (
     <>
       <Header generos={props.generos}/>
-      <main className={styles.main}>A</main>
+      <Banner />
+      <main className={styles.main}>
+        <h1>Canais de TV mais populares</h1>
+        <CarrosselFilmes filmesOuCanal={props.filmes}/>
+      </main>
     </>
   );
 }
@@ -62,9 +70,14 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const generos = await api.get("genre").then((res) => {
     return res.data;
   });
+
+  const filmes = await api.get("film").then((res) => {
+    return res.data;
+  });
   return {
     props: {
       generos,
+      filmes
     },
   };
 };
