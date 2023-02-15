@@ -38,9 +38,7 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
     if (Hls.isSupported() && playerRef.current) {
       const hls = new Hls();
       hlsRef.current = hls;
-      hls.loadSource(
-        "https://playertest.longtailvideo.com/adaptive/elephants_dream_v4/index.m3u8"
-      );
+      hls.loadSource(canal.src);
       hls.attachMedia(playerRef?.current);
       hls.on(Hls.Events.MANIFEST_PARSED, function () {
         setLevels(hls.levels);
@@ -113,10 +111,14 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
     setFullscreen(!fullscren);
   };
 
-  function debounce(func: any, timeout = 300) {
-    let timer: any;
-    return (...args: any) => {
-      clearTimeout(timer);
+  function debounce(this:any, func: Function, timeout: number = 300): (...args: any[]) => void {
+    let timer: ReturnType<typeof setTimeout> | null;
+  
+    return (...args: any[]): void => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+  
       timer = setTimeout(() => {
         func.apply(this, args);
       }, timeout);
@@ -151,7 +153,9 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
 
   const handleLegendas = (id: number) => {
     legendas?.forEach((legenda) => {
-      playerRef.current.textTracks[legenda.id].mode = "hidden";
+      if (playerRef.current) {
+        playerRef.current.textTracks[legenda.id].mode = "hidden";
+      }
     });
     if (playerRef.current?.textTracks[id]) {
       playerRef.current.textTracks[id].mode = "showing";
@@ -159,7 +163,7 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
     setLegendasSelecionadas(id);
   };
 
-  const handleAudio = (id: number) => { 
+  const handleAudio = (id: number) => {
     if (hlsRef.current) {
       hlsRef.current.audioTrack = id;
       setAudioSelecionado(id);

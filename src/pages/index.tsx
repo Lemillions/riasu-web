@@ -4,6 +4,7 @@ import { api } from "@/services/api";
 import { GetStaticProps } from "next";
 import Header from "@/components/Header";
 import Banner from "@/components/Banner";
+import CarrosselCanais from "@/components/CarrosselCanais";
 import CarrosselFilmes from "@/components/CarrosselFilmes";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -50,6 +51,7 @@ interface FilmeOuCanal {
 interface HomeProps {
   generos: Genero[];
   filmes: FilmeOuCanal[];
+  canais: FilmeOuCanal[];
 }
 
 export default function Home(props: HomeProps) {
@@ -59,10 +61,8 @@ export default function Home(props: HomeProps) {
       <Banner />
       <main className={styles.main}>
         <h1 style={{padding: "15px 0"}}>Canais de TV mais populares</h1>
-        <CarrosselFilmes filmesOuCanal={props.filmes} />
+        <CarrosselCanais filmesOuCanal={props.canais} />
         <h1 style={{padding: "15px 0"}}>Filmes mais populares</h1>
-        <CarrosselFilmes filmesOuCanal={props.filmes} />
-        <h1 style={{padding: "15px 0"}}>Canais de TV de suspense</h1>
         <CarrosselFilmes filmesOuCanal={props.filmes} />
       </main>
     </>
@@ -77,10 +77,15 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const filmes = await api.get("film").then((res) => {
     return res.data;
   });
+
+  const canais = await api.get("channel").then((res) => {
+    return res.data;
+  });
   return {
     props: {
       generos,
       filmes,
+      canais
     },
   };
 };

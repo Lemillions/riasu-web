@@ -55,13 +55,13 @@ export default function CarrosselCanais(props: propsCarrossel) {
         {filmesOuCanal.map((filmeOuCanal) => (
           <SwiperSlide key={filmeOuCanal.id} className={styles.cardFlmeOuCanal}>
             <Link
-              href={`../filmes/${filmeOuCanal.id}`}
+              href={`../canais/${filmeOuCanal.id}`}
               style={{ cursor: "pointer", color: "#ffe1dd", marginRight: "5px" }}
             >
               <Image
                 src={filmeOuCanal.banner}
                 width={width > 500?203:203*0.5}
-                height={width > 500?298:298*0.5}
+                height={width > 500?135:135*0.5}
                 alt={filmeOuCanal.name}
               />
               <h3 className={styles.titulo}>{filmeOuCanal.name}</h3>

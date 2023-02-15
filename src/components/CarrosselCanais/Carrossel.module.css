@@ -29,7 +29,7 @@
   top: 0;
   left: 0;
   width: 80px;
-  height: 298px;
+  height: 202px;
   background: linear-gradient(
     270deg,
     rgba(255, 22, 255, 0) 0%,
@@ -47,10 +47,10 @@
 @media (max-width: 508px) {
   .shadowLeft {
     width: 30px;
-    height: 180px;
+    height: 130px;
   }
   .shadowRight {
     width: 30px;
-    height: 180px;
+    height: 130px;
   }
 }
