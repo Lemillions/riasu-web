@@ -1,0 +1,36 @@
+#main {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 0 auto;
+  max-width: var(--max-width);
+}
+
+.tituloPagina {
+  font-size: 1.8rem;
+}
+
+#generosBar {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 200px;
+  min-height:  100%;
+  padding: 1rem 0.2rem;
+  border-right: 1px solid #7c77773c;
+}
+
+#filmes {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 1rem;
+  width: calc(100% - 200px);
+  align-items: center;
+  padding: 0.5rem;
+}
+
+#listaFilmes {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  gap: 1rem;
+}

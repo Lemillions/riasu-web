@@ -35,7 +35,6 @@ export default function CarrosselCanais(props: propsCarrossel) {
     setWidth(swiperRef.current?.width || 230);
     window.addEventListener("resize", resize);
   }, []);
-  console.log(swiperRef.current?.activeIndex);
   return (
     <div className={styles.slideContainer}>
       <Swiper

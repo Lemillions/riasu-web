@@ -87,5 +87,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       filmes,
       canais
     },
+    revalidate: 600, // 10 minutos
   };
 };

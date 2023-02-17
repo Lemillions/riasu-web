@@ -22,7 +22,6 @@ interface FilmeOuCanalPageProps {
 }
 export default function FilmeOuCanalPage(props: FilmeOuCanalPageProps) {
   const { canal, generos } = props;
-  console.log(canal)
   return (
     <>
       <Header generos={generos} />

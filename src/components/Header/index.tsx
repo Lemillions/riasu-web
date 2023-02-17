@@ -1,5 +1,5 @@
 import styles from "./Header.module.css";
-import Logo from "public/favicon.ico";
+import Logo from "public/logo.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Dropdown } from "antd";
@@ -24,7 +24,7 @@ export default function Header(props: HeaderProps) {
     return {
       key: genero.id,
       label: (
-        <Link href={`../tv/genero/${genero.id}`} className={styles.dropItem}>
+        <Link href={`../tv?genero=${genero.id}`} className={styles.dropItem}>
           {genero.name}
         </Link>
       ),
@@ -35,7 +35,7 @@ export default function Header(props: HeaderProps) {
       key: genero.id,
       label: (
         <Link
-          href={`../filmes/genero/${genero.id}`}
+          href={`../filmes?genero=${genero.id}`}
           className={styles.dropItem}
         >
           {genero.name}
