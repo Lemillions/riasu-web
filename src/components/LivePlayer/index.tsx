@@ -111,14 +111,18 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
     setFullscreen(!fullscren);
   };
 
-  function debounce(this:any, func: Function, timeout: number = 300): (...args: any[]) => void {
+  function debounce(
+    this: any,
+    func: Function,
+    timeout: number = 300
+  ): (...args: any[]) => void {
     let timer: ReturnType<typeof setTimeout> | null;
-  
+
     return (...args: any[]): void => {
       if (timer) {
         clearTimeout(timer);
       }
-  
+
       timer = setTimeout(() => {
         func.apply(this, args);
       }, timeout);
@@ -254,22 +258,22 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
               ))}
             </select>
           </div>
-
-          <div className={styles.controle}>
-            <select
-              value={audioSelecionado}
-              onChange={(e) => {
-                handleAudio(Number(e.target.value));
-              }}
-            >
-              {audioTracks?.map((audio, index) => (
-                <option key={index} value={index}>
-                  {audio.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
+          {audioTracks?.length > 0 && (
+            <div className={styles.controle}>
+              <select
+                value={audioSelecionado}
+                onChange={(e) => {
+                  handleAudio(Number(e.target.value));
+                }}
+              >
+                {audioTracks?.map((audio, index) => (
+                  <option key={index} value={index}>
+                    {audio.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
           <div className={styles.controle} onClick={() => handleFullScreen()}>
             {fullscren ? (
               <RiFullscreenExitLine size={20} />
