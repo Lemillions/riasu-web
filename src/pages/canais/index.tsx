@@ -30,12 +30,12 @@ interface FilmeOuCanal {
   createdAt: string;
 }
 
-interface FilmesPageProps {
+interface CanaisPageProps {
   generos: Genero[];
-  filmes: FilmeOuCanal[];
+  canais: FilmeOuCanal[];
 }
 
-export default function Filmes(props: FilmesPageProps) {
+export default function Canais(props: CanaisPageProps) {
   const [generoEscolhidos, setGeneroEscolhidos] = useState<string[]>([]);
   const router = useRouter();
 
@@ -51,22 +51,23 @@ export default function Filmes(props: FilmesPageProps) {
     }
   }, [router.query.genero]);
 
-  const filmesFiltrados = props.filmes.filter((filme) => {
+  const canaisFiltrados = props.canais.filter((canal) => {
     if (generoEscolhidos.length === 0) {
       return true;
     }
-    return filme.genres.some((genero) =>
+    return canal.genres.some((genero) =>
       generoEscolhidos.includes(genero.genreId)
     );
   });
+
   return (
     <>
       <Header generos={props.generos} />
       <main id={styles.main}>
         <div id={styles.generosBar}>
-          <div style={{width:"100%"}}>
-          <h1 style={{ fontSize: "24px" }}>Filtrar por :</h1>
-          <h2 style={{ fontSize: "18px", margin: "10px 0" }}>Gênero</h2>
+          <div style={{ width: "100%" }}>
+            <h1 style={{ fontSize: "24px" }}>Filtrar por :</h1>
+            <h2 style={{ fontSize: "18px", margin: "10px 0" }}>Gênero</h2>
           </div>
           {props.generos.map((genero) => (
             <span key={genero.id} style={{ margin: "3px 0" }}>
@@ -90,13 +91,14 @@ export default function Filmes(props: FilmesPageProps) {
             </span>
           ))}
         </div>
-        <div id={styles.filmes}>
-          <h1 className={styles.tituloPagina}>Filmes</h1>
-          <div id={styles.listaFilmes}>
-            {filmesFiltrados.map((filme) => (
-              <div key={filme.id} className={styles.filme}>
+
+        <div id={styles.canais}>
+          <h1 className={styles.tituloPagina}>Canais</h1>
+          <div id={styles.listaCanais}>
+            {canaisFiltrados.map((canal) => (
+              <div key={canal.id} className={styles.canal}>
                 <Link
-                  href={`../filmes/${filme.id}`}
+                  href={`/canais/${canal.id}`}
                   style={{
                     cursor: "pointer",
                     color: "#ffe1dd",
@@ -104,13 +106,13 @@ export default function Filmes(props: FilmesPageProps) {
                   }}
                 >
                   <Image
-                    src={filme.banner}
+                    src={canal.banner}
                     width={203}
-                    height={298}
-                    alt={filme.name}
+                    height={135}
+                    alt={canal.name}
                   />
-                  <h3 className={styles.titulo}>{filme.name}</h3>
                 </Link>
+                <h3 className={styles.titulo}>{canal.name}</h3>
               </div>
             ))}
           </div>
@@ -125,13 +127,13 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     return res.data;
   });
 
-  const filmes = await api.get("film").then((res) => {
+  const canais = await api.get("channel").then((res) => {
     return res.data;
   });
 
   return {
     props: {
-      filmes,
+      canais,
       generos,
     },
     revalidate: 60 * 10, // 10 minutos

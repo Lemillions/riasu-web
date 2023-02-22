@@ -4,6 +4,7 @@ import { GetStaticPaths, GetStaticProps } from "next/types";
 import LivePlayer from "@/components/LivePlayer";
 import styles from "./index.module.css";
 import Image from "next/image";
+import Link from "next/link";
 
 interface FilmeOuCanal {
   id: string;
@@ -30,11 +31,12 @@ export default function FilmeOuCanalPage(props: FilmeOuCanalPageProps) {
         <div className={styles.colunaPlayer}>
           <LivePlayer canal={canal} />
           <h1>{canal.name}</h1>
-          <p>{canal.description}</p>
+          <p style={{color:"#cfcccc"}}>{canal.description}</p>
         </div>
         <div className={styles.coluna}>
           <h2>Canais Relacionados</h2>
           {props.canaisRelacionados.map((canalRelacionado) => (
+            <Link href={`../canais/${canalRelacionado.id}`}>
             <div key={canalRelacionado.id} className={styles.linha}>
               <Image
                 width={203 * 0.8}
@@ -47,6 +49,7 @@ export default function FilmeOuCanalPage(props: FilmeOuCanalPageProps) {
                 <h5 style={{color:"#cfcccc"}}>{canalRelacionado.description}</h5>
               </div>
             </div>
+            </Link>
           ))}
         </div>
       </main>

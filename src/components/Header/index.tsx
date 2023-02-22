@@ -24,7 +24,7 @@ export default function Header(props: HeaderProps) {
     return {
       key: genero.id,
       label: (
-        <Link href={`../tv?genero=${genero.id}`} className={styles.dropItem}>
+        <Link href={`../canais?genero=${genero.id}`} className={styles.dropItem}>
           {genero.name}
         </Link>
       ),
@@ -69,7 +69,7 @@ export default function Header(props: HeaderProps) {
           <Image src={Logo} width={40} height={40} alt="Logo" />
         </Link>
         <Dropdown menu={{ items: itemsTv }} className={styles.navItem}>
-          <Link href={"../tv"}>TV</Link>
+          <Link href={"../canais"}>TV</Link>
         </Dropdown>
         <Dropdown menu={{ items: itemsFilmes }} className={styles.navItem}>
           <Link href={"../filmes"}>Filmes</Link>
