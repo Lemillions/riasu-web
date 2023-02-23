@@ -33,7 +33,6 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
   const playerRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<Hls>();
   const containerRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (Hls.isSupported() && playerRef.current) {
       const hls = new Hls();
@@ -72,7 +71,12 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
     window.addEventListener("fullscreenchange", (event) => {
       setFullscreen(document.fullscreenElement !== null);
     });
-  }, []);
+    return () => {
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+      }
+    };
+  }, [canal]);
 
   const handlePlay = () => {
     if (playerRef.current) {
@@ -114,7 +118,7 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
   function debounce(
     this: any,
     func: Function,
-    timeout: number = 300
+    timeout: number = 4000
   ): (...args: any[]) => void {
     let timer: ReturnType<typeof setTimeout> | null;
 

@@ -36,8 +36,8 @@ export default function FilmeOuCanalPage(props: FilmeOuCanalPageProps) {
         <div className={styles.coluna}>
           <h2>Canais Relacionados</h2>
           {props.canaisRelacionados.map((canalRelacionado) => (
-            <Link href={`../canais/${canalRelacionado.id}`}>
-            <div key={canalRelacionado.id} className={styles.linha}>
+            <Link href={`../canais/${canalRelacionado.id}`} key={canalRelacionado.id}>
+            <div className={styles.linha}>
               <Image
                 width={203 * 0.8}
                 height={135 * 0.8}
