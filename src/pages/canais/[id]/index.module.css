@@ -18,6 +18,7 @@
   flex-flow: column;
   width: 380px;
   padding: 5px;
+  gap: 0.5rem;
 }
 
 .linha {

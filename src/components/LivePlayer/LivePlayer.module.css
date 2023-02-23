@@ -20,7 +20,7 @@
   width: 100%;
   height: 50px;
   z-index: 999;
-  background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
   padding: 0 10px;
   transition: 0.3s ease-in-out;
 }
@@ -33,7 +33,6 @@
   display: flex;
   align-items: center;
   flex-flow: row nowrap;
-  
 }
 
 .controle {
@@ -46,13 +45,40 @@
   border-radius: 3px;
 }
 
-.controle:hover{
+.controle:hover {
   background-color: rgba(255, 255, 255, 0.134);
 }
 
-.controle input[type="range" i]  {
+.controle input[type="range" i] {
   background-color: #ddd;
   width: 100%;
   height: 15px;
   color: red !important;
 }
+
+.menuItems {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 7px 10px 7px 15px;
+}
+
+.subMenuItems {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 7px 15px;
+}
+
+.menuItems:hover {
+  background-color: rgba(255, 255, 255, 0.134);
+}
+

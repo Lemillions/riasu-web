@@ -3,8 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./LivePlayer.module.css";
 import { GiPauseButton } from "react-icons/gi";
 import { FaPlay } from "react-icons/fa";
-import { BsFillVolumeOffFill, BsFillVolumeMuteFill } from "react-icons/bs";
+import {
+  BsFillVolumeOffFill,
+  BsFillVolumeMuteFill,
+  BsFillGearFill,
+} from "react-icons/bs";
 import { RiFullscreenLine, RiFullscreenExitLine } from "react-icons/ri";
+import { TiChevronRight, TiChevronLeft } from "react-icons/ti";
+import { Popover } from "antd";
 
 interface FilmeOuCanal {
   id: string;
@@ -30,6 +36,143 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
   const [audioSelecionado, setAudioSelecionado] = useState(0);
   const [legendasSelecionadas, setLegendasSelecionadas] = useState<any>();
   const [showControls, setShowControls] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  console.log(legendasSelecionadas);
+  const contentDefault = (
+    <div style={{ display: "flex", flexFlow: "column" }}>
+      {legendas?.length ? (
+        <span
+          className={styles.menuItems}
+          onClick={() => setMenu(contentLegenda)}
+        >
+          <span>Legenda</span>
+          <TiChevronRight size={16} />
+        </span>
+      ) : (
+        <></>
+      )}
+      {audioTracks?.length > 1 ? (
+        <span
+          className={styles.menuItems}
+          onClick={() => setMenu(contentAudio)}
+        >
+          Aúdio <TiChevronRight size={16} />
+        </span>
+      ) : (
+        <></>
+      )}
+      <span
+        className={styles.menuItems}
+        onClick={() => setMenu(contentQualidade)}
+      >
+        Qualidade <TiChevronRight size={16} />
+      </span>
+    </div>
+  );
+
+  const contentLegenda = (
+    <div style={{ display: "flex", flexFlow: "column" }}>
+      <span
+        className={styles.subMenuItems}
+        onClick={() => {
+          setMenu(contentDefault);
+        }}
+      >
+        <TiChevronLeft size={16} />
+        Voltar
+      </span>
+      {legendas?.map((legenda, index) => (
+        <span
+          className={styles.subMenuItems}
+          key={index}
+          onClick={() => {
+            handleLegendas(index);
+            setMenuIsOpen(false);
+            setMenu(contentDefault);
+            setLegendasSelecionadas(index);
+          }}
+          style={
+            legendasSelecionadas == index ? { backgroundColor: "#383838" } : {}
+          }
+        >
+          <span>{legenda.label}</span>
+        </span>
+      ))}
+    </div>
+  );
+
+  const contentQualidade = (
+    <div style={{ display: "flex", flexFlow: "column-reverse" }}>
+      <span
+        className={styles.subMenuItems}
+        onClick={() => {
+          hlsRef.current ? (hlsRef.current.currentLevel = -1) : null;
+          setMenuIsOpen(false);
+          setMenu(contentDefault);
+          setCurrentLevel(-1);
+        }}
+        style={currentLevel == -1 ? { backgroundColor: "#383838" } : {}}
+      >
+        <span>auto</span>
+      </span>
+      {levels?.map((level, index) => (
+        <span
+          className={styles.subMenuItems}
+          key={index}
+          onClick={() => {
+            hlsRef.current ? (hlsRef.current.currentLevel = index) : null;
+            setMenuIsOpen(false);
+            setMenu(contentDefault);
+            setCurrentLevel(index);
+          }}
+          style={currentLevel == index ? { backgroundColor: "#383838" } : {}}
+        >
+          <span>{level.height}p</span>
+        </span>
+      ))}
+      <span
+        className={styles.subMenuItems}
+        onClick={() => {
+          setMenu(contentDefault);
+        }}
+      >
+        <TiChevronLeft size={16} />
+        Voltar
+      </span>
+    </div>
+  );
+
+  const contentAudio = (
+    <div style={{ display: "flex", flexFlow: "column" }}>
+      <span
+        className={styles.subMenuItems}
+        onClick={() => {
+          setMenu(contentDefault);
+        }}
+      >
+        <TiChevronLeft size={16} />
+        Voltar
+      </span>
+      {audioTracks?.map((audio, index) => (
+        <span
+          className={styles.subMenuItems}
+          key={index}
+          onClick={() => {
+            handleAudio(index);
+            setMenuIsOpen(false);
+            setMenu(contentDefault);
+            setAudioSelecionado(index);
+          }}
+          style={
+            audioSelecionado == index ? { backgroundColor: "#383838" } : {}
+          }
+        >
+          <span>{audio.name}</span>
+        </span>
+      ))}
+    </div>
+  );
+  const [menu, setMenu] = useState<JSX.Element>(contentDefault);
   const playerRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<Hls>();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -227,57 +370,29 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
             />
           </div>
         </div>
-        <div className={styles.controles}>
-          <div className={styles.controle}>
-            <select
-              value={currentLevel}
-              onChange={(e) => {
-                setCurrentLevel(Number(e.target.value));
-                if (hlsRef.current) {
-                  hlsRef.current.currentLevel = Number(e.target.value);
-                }
-              }}
-            >
-              <option value={-1}>Auto</option>
-              {levels.map((level, index) => (
-                <option key={index} value={index}>
-                  {level.height}p
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className={styles.controle}>
-            <select
-              value={legendasSelecionadas}
-              onChange={(e) => {
-                handleLegendas(Number(e.target.value));
-              }}
-            >
-              <option value={-1}>Sem legenda</option>
-              {legendas?.map((legenda, index) => (
-                <option key={index} value={index}>
-                  {legenda.label}
-                </option>
-              ))}
-            </select>
-          </div>
-          {audioTracks?.length > 0 && (
+        <div className={styles.controles} style={{gap:"10px"}}>
+          <Popover
+            content={menu}
+            trigger={"click"}
+            open={menuIsOpen}
+            overlayInnerStyle={{
+              padding: 0,
+              overflow: "hidden",
+            }}
+            onOpenChange={(open) => {
+              if (!open) {
+                setMenuIsOpen(false);
+                setMenu(contentDefault);
+              } else {
+                setMenuIsOpen(true);
+              }
+            }}
+          >
             <div className={styles.controle}>
-              <select
-                value={audioSelecionado}
-                onChange={(e) => {
-                  handleAudio(Number(e.target.value));
-                }}
-              >
-                {audioTracks?.map((audio, index) => (
-                  <option key={index} value={index}>
-                    {audio.name}
-                  </option>
-                ))}
-              </select>
+              <BsFillGearFill size={20} />
             </div>
-          )}
+          </Popover>
+          
           <div className={styles.controle} onClick={() => handleFullScreen()}>
             {fullscren ? (
               <RiFullscreenExitLine size={20} />
