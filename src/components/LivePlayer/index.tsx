@@ -37,7 +37,6 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
   const [legendasSelecionadas, setLegendasSelecionadas] = useState<any>();
   const [showControls, setShowControls] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  console.log(legendasSelecionadas);
   const contentDefault = (
     <div style={{ display: "flex", flexFlow: "column" }}>
       {legendas?.length ? (
@@ -107,9 +106,9 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
         className={styles.subMenuItems}
         onClick={() => {
           hlsRef.current ? (hlsRef.current.currentLevel = -1) : null;
+          setCurrentLevel(-1);
           setMenuIsOpen(false);
           setMenu(contentDefault);
-          setCurrentLevel(-1);
         }}
         style={currentLevel == -1 ? { backgroundColor: "#383838" } : {}}
       >
@@ -178,7 +177,9 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (Hls.isSupported() && playerRef.current) {
-      const hls = new Hls();
+      const hls = new Hls({
+        lowLatencyMode: true,
+      });
       hlsRef.current = hls;
       hls.loadSource(canal.src);
       hls.attachMedia(playerRef?.current);
@@ -387,6 +388,7 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
                 setMenuIsOpen(true);
               }
             }}
+            getPopupContainer={() => containerRef.current as HTMLElement}
           >
             <div className={styles.controle}>
               <BsFillGearFill size={20} />
