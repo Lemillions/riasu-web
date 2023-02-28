@@ -24,7 +24,9 @@ interface FilmeOuCanal {
   banner: string;
   genres: {
     genreId: string;
-    genre: Genero;
+    genre: {
+      name: string;
+    }
   }[];
   products?: string[];
   createdAt: string;

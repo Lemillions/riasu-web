@@ -2,8 +2,7 @@
   position: relative;
 }
 
-.cardFlmeOuCanal :hover {
-  background-color: #000000;
+.cardFlmeOuCanal:hover {
   opacity: 0.7;
   transition: 0.3s;
 }

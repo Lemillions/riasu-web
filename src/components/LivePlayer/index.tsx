@@ -10,7 +10,8 @@ import {
 } from "react-icons/bs";
 import { RiFullscreenLine, RiFullscreenExitLine } from "react-icons/ri";
 import { TiChevronRight, TiChevronLeft } from "react-icons/ti";
-import { Popover } from "antd";
+import { Popover, Slider } from "antd";
+import { useRouter } from "next/router";
 
 interface FilmeOuCanal {
   id: string;
@@ -18,7 +19,12 @@ interface FilmeOuCanal {
   description?: string;
   src: string;
   banner: string;
-  genres: string[];
+  genres: {
+    genreId: string;
+    genre: {
+      name: string;
+    };
+  }[];
   products?: string[];
   createdAt: string;
 }
@@ -37,6 +43,9 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
   const [legendasSelecionadas, setLegendasSelecionadas] = useState<any>();
   const [showControls, setShowControls] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const router = useRouter();
   const contentDefault = (
     <div style={{ display: "flex", flexFlow: "column" }}>
       {legendas?.length ? (
@@ -215,6 +224,13 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
     window.addEventListener("fullscreenchange", (event) => {
       setFullscreen(document.fullscreenElement !== null);
     });
+
+    playerRef.current?.addEventListener("timeupdate", () => {
+      if (playerRef.current) {
+        setProgress(playerRef.current.currentTime);
+      }
+    });
+
     return () => {
       if (hlsRef.current) {
         hlsRef.current.destroy();
@@ -259,29 +275,57 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
     setFullscreen(!fullscren);
   };
 
-  function debounce(
-    this: any,
-    func: Function,
-    timeout: number = 4000
-  ): (...args: any[]) => void {
+  function debounce<F extends (...args: any[]) => void>(
+    func: F,
+    timeout: number
+  ): (...args: Parameters<F>) => void {
     let timer: ReturnType<typeof setTimeout> | null;
 
-    return (...args: any[]): void => {
+    return function (this: any, ...args: Parameters<F>): void {
+      const context = this;
       if (timer) {
         clearTimeout(timer);
       }
 
       timer = setTimeout(() => {
-        func.apply(this, args);
+        func.apply(context, args);
       }, timeout);
     };
   }
-  function sumirControle() {
+  const sumirControle = () => {
     setShowControls(false);
-  }
-  const processChange = debounce(sumirControle, 4000);
+  };
+  const processChange = debounce(sumirControle, 5000);
 
-  const carregarAudiosELegendas = () => {
+  const formatterSecondsToTime = (segundos: number) => {
+    if (duration >= 3600) {
+      return (
+        Math.floor(segundos / 3600)
+          .toString()
+          .padStart(2, "0") +
+        ":" +
+        Math.floor(segundos / 60)
+          .toString()
+          .padStart(2, "0") +
+        ":" +
+        Math.floor(segundos % 60)
+          .toString()
+          .padStart(2, "0")
+      );
+    } else {
+      return (
+        Math.floor(segundos / 60)
+          .toString()
+          .padStart(2, "0") +
+        ":" +
+        Math.floor(segundos % 60)
+          .toString()
+          .padStart(2, "0")
+      );
+    }
+  };
+
+  const carregarDados = () => {
     let legendasMap = [];
     for (let i = 0; i < (playerRef.current?.textTracks.length || 0); i++) {
       legendasMap.push({
@@ -301,6 +345,8 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
       setAudioTracks(audiosMap);
       hlsRef.current.audioTrack = 0;
     }
+
+    setDuration(playerRef.current?.duration || 0);
   };
 
   const handleLegendas = (id: number) => {
@@ -338,69 +384,93 @@ export default function LivePlayer(props: { canal: FilmeOuCanal }) {
         autoPlay={true}
         id={styles.player}
         onLoadedMetadata={() => {
-          carregarAudiosELegendas();
+          carregarDados();
         }}
       />
       <div
         id={styles.controlesContainer}
         style={showControls ? { opacity: 1 } : { opacity: 0 }}
       >
-        <div className={styles.controles}>
-          <div className={styles.controle} onClick={() => handlePlay()}>
-            {playing ? <GiPauseButton size={20} /> : <FaPlay size={16} />}
-          </div>
-          <div className={styles.controle}>
-            {!muted ? (
-              <BsFillVolumeOffFill size={30} onClick={() => setMuted(true)} />
-            ) : (
-              <BsFillVolumeMuteFill
-                size={30}
-                onClick={() => setMuted(!volume)}
-              />
-            )}
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={volume}
-              onChange={(e) => handleVolume(Number(e.target.value))}
-              style={{
-                background:
-                  "linear-gradient(to right, #82CFD0 0%, #82CFD0 50%, #fff 50%, #fff 100%)",
-              }}
+        {router.pathname.includes("filmes") && (
+          <div id={styles.progressBar}>
+            <Slider
+              value={progress}
+              onChange={(e) =>
+                playerRef.current ? (playerRef.current.currentTime = e) : null
+              }
+              max={duration}
+              trackStyle={{ backgroundColor: "red" }}
+              handleStyle={{ boxShadow: "none", borderColor: "red" }}
             />
           </div>
-        </div>
-        <div className={styles.controles} style={{gap:"10px"}}>
-          <Popover
-            content={menu}
-            trigger={"click"}
-            open={menuIsOpen}
-            overlayInnerStyle={{
-              padding: 0,
-              overflow: "hidden",
-            }}
-            onOpenChange={(open) => {
-              if (!open) {
-                setMenuIsOpen(false);
-                setMenu(contentDefault);
-              } else {
-                setMenuIsOpen(true);
-              }
-            }}
-            getPopupContainer={() => containerRef.current as HTMLElement}
-          >
-            <div className={styles.controle}>
-              <BsFillGearFill size={20} />
+        )}
+
+        <div id={styles.acoesContainer}>
+          <div className={styles.controles}>
+            <div className={styles.controle} onClick={() => handlePlay()}>
+              {playing ? <GiPauseButton size={20} /> : <FaPlay size={16} />}
             </div>
-          </Popover>
-          
-          <div className={styles.controle} onClick={() => handleFullScreen()}>
-            {fullscren ? (
-              <RiFullscreenExitLine size={20} />
-            ) : (
-              <RiFullscreenLine size={20} />
+            <div className={styles.controle}>
+              {!muted ? (
+                <BsFillVolumeOffFill size={30} onClick={() => setMuted(true)} />
+              ) : (
+                <BsFillVolumeMuteFill
+                  size={30}
+                  onClick={() => setMuted(!volume)}
+                />
+              )}
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={volume}
+                onChange={(e) => handleVolume(Number(e.target.value))}
+                style={{
+                  background:
+                    "linear-gradient(to right, #82CFD0 0%, #82CFD0 50%, #fff 50%, #fff 100%)",
+                }}
+              />
+            </div>
+            {router.pathname.includes("filmes") && (
+            <span>
+              
+              {formatterSecondsToTime(playerRef.current?.currentTime || 0)} /{" "}
+              {formatterSecondsToTime(duration)}
+            </span>
             )}
+          </div>
+          <div className={styles.controles} style={{ gap: "10px" }}>
+            <Popover
+              content={menu}
+              trigger={"click"}
+              open={menuIsOpen}
+              overlayInnerStyle={{
+                padding: 0,
+                overflow: "hidden",
+              }}
+              onOpenChange={(open) => {
+                if (!open) {
+                  setMenuIsOpen(false);
+                  setMenu(contentDefault);
+                } else {
+                  setMenuIsOpen(true);
+                }
+              }}
+              getPopupContainer={() => containerRef.current as HTMLElement}
+            >
+              <div className={styles.controle}>
+                <BsFillGearFill size={20} />
+              </div>
+            </Popover>
+
+            <div className={styles.controle} onClick={() => handleFullScreen()}>
+              {fullscren ? (
+                <RiFullscreenExitLine size={20} />
+              ) : (
+                <RiFullscreenLine size={20} />
+              )}
+            </div>
           </div>
         </div>
       </div>

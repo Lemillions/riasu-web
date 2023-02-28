@@ -11,7 +11,12 @@ interface FilmeOuCanal {
   description?: string;
   src: string;
   banner: string;
-  genres: string[];
+  genres: {
+    genreId: string;
+    genre: {
+      name: string;
+    }
+  }[];
   products?: string[];
   createdAt: string;
 }
