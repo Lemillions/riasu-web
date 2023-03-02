@@ -18,34 +18,7 @@ export default function Banner() {
     >
       <SwiperSlide>
         <Image
-          src="http://localhost:3000/banners/banner1.jpeg"
-          alt="banner1"
-          width={883}
-          height={267}
-          className={styles.bannerImage}
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image
-          src="http://localhost:3000/banners/banner1.jpeg"
-          alt="banner1"
-          width={883}
-          height={267}
-          className={styles.bannerImage}
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image
-          src="http://localhost:3000/banners/banner1.jpeg"
-          alt="banner1"
-          width={883}
-          height={267}
-          className={styles.bannerImage}
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image
-          src="http://localhost:3000/banners/banner1.jpeg"
+          src="../banners/banner1.jpeg"
           alt="banner1"
           width={883}
           height={267}
