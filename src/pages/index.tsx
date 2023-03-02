@@ -146,6 +146,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       canaisEsporte,
       canaisNoticias,
     },
-    revalidate: 600, // 10 minutos
+    revalidate: 60, // 1 minuto
   };
 };
