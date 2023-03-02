@@ -5,6 +5,7 @@ import styles from "./Banner.module.css";
 import "swiper/css";
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import banner from "../../../public/banners/banner1.jpeg"
 
 export default function Banner() {
   return (
@@ -18,7 +19,7 @@ export default function Banner() {
     >
       <SwiperSlide>
         <Image
-          src="https://riasu-web.vercel.app/banners/banner1.jpeg"
+          src={banner}
           alt="banner1"
           width={883}
           height={267}
@@ -27,7 +28,7 @@ export default function Banner() {
       </SwiperSlide>
       <SwiperSlide>
         <Image
-          src="https://riasu-web.vercel.app/banners/banner1.jpeg"
+          src={banner}
           alt="banner1"
           width={883}
           height={267}
