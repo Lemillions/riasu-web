@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import { Checkbox } from "antd";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 interface Genero {
   id: string;
@@ -26,7 +27,7 @@ interface FilmeOuCanal {
     genreId: string;
     genre: {
       name: string;
-    }
+    };
   }[];
   products?: string[];
   createdAt: string;
@@ -63,12 +64,15 @@ export default function Filmes(props: FilmesPageProps) {
   });
   return (
     <>
+      <Head>
+        <title>Riasu Player</title>
+      </Head>
       <Header generos={props.generos} />
       <main id={styles.main}>
         <div id={styles.generosBar}>
-          <div style={{width:"100%"}}>
-          <h1 style={{ fontSize: "24px" }}>Filtrar por :</h1>
-          <h2 style={{ fontSize: "18px", margin: "10px 0" }}>Gênero</h2>
+          <div style={{ width: "100%" }}>
+            <h1 style={{ fontSize: "24px" }}>Filtrar por :</h1>
+            <h2 style={{ fontSize: "18px", margin: "10px 0" }}>Gênero</h2>
           </div>
           {props.generos.map((genero) => (
             <span key={genero.id} style={{ margin: "3px 0" }}>

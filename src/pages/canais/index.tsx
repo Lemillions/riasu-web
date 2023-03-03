@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import { Checkbox } from "antd";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 interface Genero {
   id: string;
@@ -62,6 +63,9 @@ export default function Canais(props: CanaisPageProps) {
 
   return (
     <>
+    <Head>
+      <title>Riasu Player</title>
+    </Head>
       <Header generos={props.generos} />
       <main id={styles.main}>
         <div id={styles.generosBar}>

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Banner from "@/components/Banner";
 import CarrosselCanais from "@/components/CarrosselCanais";
 import CarrosselFilmes from "@/components/CarrosselFilmes";
+import Head from "next/head";
 
 interface Genero {
   id: string;
@@ -44,7 +45,7 @@ interface FilmeOuCanal {
     genreId: string;
     genre: {
       name: string;
-    }
+    };
   }[];
   products?: string[];
   createdAt: string;
@@ -63,34 +64,37 @@ interface HomeProps {
 export default function Home(props: HomeProps) {
   return (
     <>
+      <Head>
+        <title>Riasu Player</title>
+      </Head>
       <Header generos={props.generos} />
       <Banner />
       <main className={styles.main}>
-        <h1 style={{padding: "15px 0"}}>Canais de TV mais populares</h1>
+        <h1 style={{ padding: "15px 0" }}>Canais de TV mais populares</h1>
         <CarrosselCanais filmesOuCanal={props.canais} />
-        <h1 style={{padding: "15px 0"}}>Filmes mais populares</h1>
+        <h1 style={{ padding: "15px 0" }}>Filmes mais populares</h1>
         <CarrosselFilmes filmesOuCanal={props.filmes} />
         {props.filmesAcao.length > 0 && (
           <>
-            <h1 style={{padding: "15px 0"}}>Filmes de Ação</h1>
+            <h1 style={{ padding: "15px 0" }}>Filmes de Ação</h1>
             <CarrosselFilmes filmesOuCanal={props.filmesAcao} />
           </>
         )}
         {props.canaisEsporte.length > 0 && (
           <>
-            <h1 style={{padding: "15px 0"}}>Canais de Esporte</h1>
-            <CarrosselCanais filmesOuCanal={props.canaisEsporte} /> 
+            <h1 style={{ padding: "15px 0" }}>Canais de Esporte</h1>
+            <CarrosselCanais filmesOuCanal={props.canaisEsporte} />
           </>
         )}
         {props.filmesComedia.length > 0 && (
           <>
-            <h1 style={{padding: "15px 0"}}>Filmes de Comédia</h1>
+            <h1 style={{ padding: "15px 0" }}>Filmes de Comédia</h1>
             <CarrosselFilmes filmesOuCanal={props.filmesComedia} />
           </>
         )}
         {props.canaisNoticias.length > 0 && (
           <>
-            <h1 style={{padding: "15px 0"}}>Canais de Notícias</h1>
+            <h1 style={{ padding: "15px 0" }}>Canais de Notícias</h1>
             <CarrosselCanais filmesOuCanal={props.canaisNoticias} />
           </>
         )}
