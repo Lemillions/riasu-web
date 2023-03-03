@@ -74,5 +74,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       generos,
       filme,
     },
+    revalidate: 60 * 10 //10 minutos
   };
 };

@@ -108,5 +108,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       canal,
       canaisRelacionados,
     },
+    revalidate: 60 * 10 //10 minutos
   };
 };
