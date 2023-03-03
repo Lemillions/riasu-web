@@ -1,13 +1,22 @@
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination } from 'swiper';
+import { Autoplay, Navigation, Pagination } from "swiper";
 import styles from "./Banner.module.css";
 import "swiper/css";
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import banner from "../../../public/banners/banner1.jpeg"
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import Link from "next/link";
 
-export default function Banner() {
+interface BannerProps {
+  banners: {
+    id: string;
+    src: string;
+    link: string;
+    createdAt: string;
+  }[];
+}
+
+export default function Banner(props: BannerProps) {
   return (
     <Swiper
       modules={[Navigation, Pagination, Autoplay]}
@@ -17,24 +26,21 @@ export default function Banner() {
       pagination={{ clickable: true }}
       id={styles.banner}
     >
-      <SwiperSlide>
-        <Image
-          src={banner}
-          alt="banner1"
-          width={883}
-          height={267}
-          className={styles.bannerImage}
-        />
-      </SwiperSlide>
-      <SwiperSlide>
-        <Image
-          src={banner}
-          alt="banner1"
-          width={883}
-          height={267}
-          className={styles.bannerImage}
-        />
-      </SwiperSlide>
+      {props.banners.map((banner) => {
+        return (
+          <SwiperSlide>
+            <Link href={banner.link}>
+            <Image
+              src={banner.src}
+              alt="banner de um canal ou filme"
+              width={883}
+              height={267}
+              className={styles.bannerImage}
+            />
+            </Link>
+          </SwiperSlide>
+        );
+      })}
     </Swiper>
   );
 }

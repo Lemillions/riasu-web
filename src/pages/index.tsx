@@ -51,6 +51,13 @@ interface FilmeOuCanal {
   createdAt: string;
 }
 
+interface BannerType {
+  id: string;
+  src: string;
+  link: string;
+  createdAt: string;
+}
+
 interface HomeProps {
   generos: Genero[];
   filmes: FilmeOuCanal[];
@@ -59,6 +66,7 @@ interface HomeProps {
   filmesComedia: FilmeOuCanal[];
   canaisEsporte: FilmeOuCanal[];
   canaisNoticias: FilmeOuCanal[];
+  banners: BannerType[];
 }
 
 export default function Home(props: HomeProps) {
@@ -68,7 +76,7 @@ export default function Home(props: HomeProps) {
         <title>Riasu Player</title>
       </Head>
       <Header generos={props.generos} />
-      <Banner />
+      {props.banners.length && <Banner banners={props.banners}/>}
       <main className={styles.main}>
         <h1 style={{ padding: "15px 0" }}>Canais de TV mais populares</h1>
         <CarrosselCanais filmesOuCanal={props.canais} />
@@ -140,6 +148,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     });
   });
 
+  const banners = await api.get("banner").then((res) => {
+    return res.data;
+  });
+
   return {
     props: {
       generos,
@@ -149,6 +161,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       filmesComedia,
       canaisEsporte,
       canaisNoticias,
+      banners,
     },
     revalidate: 60, // 1 minuto
   };
