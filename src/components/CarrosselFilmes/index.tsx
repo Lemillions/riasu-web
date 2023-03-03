@@ -68,7 +68,7 @@ export default function CarrosselCanais(props: propsCarrossel) {
                 height={width > 500?298:298*0.5}
                 alt={filmeOuCanal.name}
               />
-              <h3 className={styles.titulo}>{filmeOuCanal.name}</h3>
+              <h2 className={styles.titulo}>{filmeOuCanal.name}</h2>
             </Link>
           </SwiperSlide>
         ))}
