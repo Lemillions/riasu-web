@@ -28,7 +28,7 @@ export default function Banner(props: BannerProps) {
     >
       {props.banners.map((banner) => {
         return (
-          <SwiperSlide>
+          <SwiperSlide key={banner.id}>
             <Link href={banner.link}>
             <Image
               src={banner.src}
