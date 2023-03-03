@@ -5,6 +5,7 @@ import LivePlayer from "@/components/LivePlayer";
 import styles from "./index.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 interface FilmeOuCanal {
   id: string;
@@ -31,6 +32,9 @@ export default function FilmeOuCanalPage(props: FilmeOuCanalPageProps) {
   const { canal, generos } = props;
   return (
     <>
+    <Head>
+      <title>{canal.name} - Riasu Player</title>
+    </Head>
       <Header generos={generos} />
       <main id={styles.main}>
         <div className={styles.colunaPlayer}>

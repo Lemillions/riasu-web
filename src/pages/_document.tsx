@@ -5,8 +5,9 @@ export default function Document() {
     <Html lang="en">
       <Head >
         <meta charSet="utf-8" />
-        <meta name="description" content="Riasu player, site para assistir filmes e canais" />
+        <meta name="description" content="Riasu player, site para assistir filmes e canais de tv" />
         <link rel="icon" href="/logo.png" />
+        <title>Riasu Player</title>
       </Head>
       <body>
         <Main />

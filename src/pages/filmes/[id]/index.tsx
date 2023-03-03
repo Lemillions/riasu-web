@@ -3,6 +3,7 @@ import { api } from "@/services/api";
 import { GetStaticPaths, GetStaticProps } from "next/types";
 import LivePlayer from "@/components/LivePlayer";
 import styles from "./index.module.css"
+import Head from "next/head";
 
 
 interface FilmeOuCanal {
@@ -30,6 +31,9 @@ export default function FilmeOuCanalPage(props: FilmeOuCanalPageProps) {
 
   return (
     <>
+    <Head>
+      <title>{filme.name} - Riasu Player</title>
+    </Head>
       <Header generos={generos} />
       <main id={styles.main}>
         <LivePlayer canal={filme} />
